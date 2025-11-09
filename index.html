@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Gorilla Tag">
+  <meta property="og:description" content="Un1ty - Content creator, developer, and all-around creative">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=1024&h=1024&fit=crop">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#00a2ff">
+  <title>Un1ty</title>
+  
+  <link rel="icon" type="image/gif" href="https://media.tenor.com/5bqu8Q5b_CAAAAAj/finger-painter-badge.gif">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      color: #e0e0e0;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    .splash-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      text-align: center;
+    }
+
+    .splash-content h1 {
+      font-family: 'Righteous', cursive;
+      font-size: 3.5rem;
+      color: #00a2ff;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .tap-text {
+      font-size: 1.2rem;
+      color: #888;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      z-index: 1;
+      user-select: none;
+      cursor: default;
+      background: radial-gradient(circle, #00a2ff, transparent);
+      box-shadow: 0 0 10px #00a2ff;
+      border-radius: 50%;
+      opacity: 0.9;
+      display: none;
+    }
+
+    .snowflake.visible {
+      display: block;
+    }
+
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      border: 2px solid #00a2ff;
+      background: rgba(0, 162, 255, 0.1);
+      color: #00a2ff;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      padding: 0;
+      font-size: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .music-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+      opacity: 0;
+      animation: slideUp 0.8s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-pic {
+      width: 180px;
+      height: 180px;
+      border-radius: 20px;
+      margin: 0 auto 30px;
+      border: 4px solid #00a2ff;
+      object-fit: cover;
+      box-shadow: 0 0 40px rgba(0, 162, 255, 0.3);
+      transition: all 0.5s ease;
+    }
+
+    .profile-pic:hover {
+      transform: translateY(-10px) rotate(2deg);
+      box-shadow: 0 0 60px rgba(0, 162, 255, 0.6);
+    }
+
+    .name {
+      font-family: 'Righteous', cursive;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #00a2ff;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #888;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .bio-section {
+      background: rgba(0, 162, 255, 0.1);
+      border: 2px solid #00a2ff;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .bio-title {
+      font-family: 'Righteous', cursive;
+      font-size: 1.3rem;
+      color: #00a2ff;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .bio-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #c0c0c0;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 40px 0;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      border: 2px solid #00a2ff;
+      background: rgba(0, 162, 255, 0.1);
+      color: #00a2ff;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .social-btn:hover {
+      background: #00a2ff;
+      color: #000000;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 162, 255, 0.4);
+    }
+
+    .social-btn i {
+      font-size: 24px;
+    }
+
+    .section {
+      margin-top: 70px;
+      opacity: 0;
+      animation: slideUp 0.8s ease forwards;
+      animation-delay: 0.2s;
+    }
+
+    .section-header {
+      border-bottom: 2px solid #00a2ff;
+      padding-bottom: 12px;
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-family: 'Righteous', cursive;
+      font-size: 1.5rem;
+      color: #00a2ff;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .about-text {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: #b0b0b0;
+    }
+
+    .projects-container {
+      margin-top: 20px;
+    }
+
+    .project-card {
+      background: rgba(0, 162, 255, 0.08);
+      border: 1px solid rgba(0, 162, 255, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover {
+      border-color: #00a2ff;
+      background: rgba(0, 162, 255, 0.15);
+      transform: translateX(5px);
+    }
+
+    .project-title {
+      font-family: 'Righteous', cursive;
+      font-size: 1.2rem;
+      color: #00a2ff;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      color: #999;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 80px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(0, 162, 255, 0.2);
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .typewriter-cursor {
+      display: inline;
+      animation: typewriterBlink 0.7s infinite;
+    }
+
+    @keyframes typewriterBlink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .name {
+        font-size: 2.5rem;
+      }
+
+      .container {
+        padding: 40px 20px;
+      }
+
+      .social-buttons {
+        gap: 10px;
+      }
+
+      .social-btn {
+        width: 50px;
+        height: 50px;
+      }
+
+      .social-btn i {
+        font-size: 20px;
+      }
+
+      .music-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .splash-content h1 {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-content">
+      <h1>Un1ty</h1>
+      <p class="tap-text">Tap to Enter</p>
+    </div>
+  </div>
+
+  <div id="snow-container"></div>
+
+  <button class="music-btn" id="musicBtn" title="Toggle Music">
+    <i class="fas fa-volume-up"></i>
+  </button>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.scarybeatz.com/wp-content/uploads/2024/08/Usher_Ft_Alicia_Keys_-_My_Boo_ScaryBeatz.com.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="container">
+    <div class="hero">
+      <img src="https://i.imgur.com/VbfjP2j.jpeg" alt="Un1ty" class="profile-pic">
+      <h1 class="name" id="typewriterName"><span class="typewriter-cursor">|</span></h1>
+      <p class="tagline">Creator • Developer • Artist</p>
+      
+      <div class="bio-section">
+        <div class="bio-title">Bio</div>
+        <p class="bio-text">
+          Welcome to my site! I'm Un1ty im a passoniate creator and developer building cool projects and creating funny and entertaining content. 
+          Always learning, always creating, always working.
+        </p>
+      </div>
+
+      <div class="social-buttons">
+        <a href="https://youtube.com/@un1tyvr" class="social-btn" title="YouTube" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://tiktok.com/@un1tyvr" class="social-btn" title="TikTok" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://discord.gg/eydwy5Gue2" class="social-btn" title="Discord" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-discord"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">About</h2>
+      </div>
+      <p class="about-text">
+        I'm a creative content creator and developer passionate about building experiences that matter, from making engaging content to developing fun games, 
+        I love pushing boundaries and exploring what's possible with creativity, I also love to Model and Animate in Blender.
+      </p>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Featured</h2>
+      </div>
+      <div class="projects-container">
+        <div class="project-card">
+          <div class="project-title">Content Creation</div>
+          <div class="project-desc">Creating engaging content across multiple platforms. Building a community of creators and supporters.</div>
+        </div>
+        <div class="project-card">
+          <div class="project-title">Web Experience</div>
+          <div class="project-desc">Designing and developing beautiful web experiences that users love to interact with.</div>
+        </div>
+        <div class="project-card">
+          <div class="project-title">Coding Experience</div>
+          <div class="project-desc">Designing cool and Useful Tools with Python, C#, and More Coding Languages.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 Un1ty • Made with passion</p>
+    </div>
+  </div>
+
+  <script>
+    const splashScreen = document.getElementById('splashScreen');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const snowContainer = document.getElementById('snow-container');
+    const typewriterName = document.getElementById('typewriterName');
+    let isMuted = false;
+    let snowflakesVisible = false;
+
+    bgMusic.volume = 0.3;
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) translateX(100px);
+          opacity: 0;
+        }
+      }
+      .snowflake {
+        animation: fall linear forwards;
+      }
+    `;
+    document.head.appendChild(style);
+
+    splashScreen.addEventListener('click', () => {
+      bgMusic.play();
+      splashScreen.classList.add('hidden');
+      
+      musicBtn.classList.add('visible');
+      snowflakesVisible = true;
+      typewriter();
+    });
+
+    musicBtn.addEventListener('click', () => {
+      if (isMuted) {
+        bgMusic.play();
+        musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        isMuted = false;
+      } else {
+        bgMusic.pause();
+        musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        isMuted = true;
+      }
+    });
+
+    function createSnowflake() {
+      if (!snowflakesVisible) return;
+
+      const snowflake = document.createElement('div');
+      snowflake.classList.add('snowflake', 'visible');
+      snowflake.style.left = Math.random() * window.innerWidth + 'px';
+      snowflake.style.width = Math.random() * 8 + 5 + 'px';
+      snowflake.style.height = snowflake.style.width;
+      snowflake.style.animationDuration = Math.random() * 3 + 5.5 + 's';
+      snowflake.style.opacity = Math.random() * 0.4 + 0.6;
+      
+      snowContainer.appendChild(snowflake);
+      
+      setTimeout(() => snowflake.remove(), 8000);
+    }
+
+    setInterval(createSnowflake, 30);
+
+    const texts = ['@UN1TYVR ON DISCORD', 'SUBSCRIBE TO ME!', 'JOIN MY DISCORD!', 'FOLLOW MY TIKTOK!'];
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typewriter() {
+      const currentText = texts[textIndex];
+      const displayText = isDeleting 
+        ? currentText.substring(0, charIndex - 1)
+        : currentText.substring(0, charIndex + 1);
+      
+      typewriterName.textContent = displayText;
+      typewriterName.innerHTML = displayText + '<span class="typewriter-cursor">|</span>';
+
+      if (!isDeleting && charIndex < currentText.length) {
+        charIndex++;
+        setTimeout(typewriter, 80);
+      } else if (isDeleting && charIndex > 0) {
+        charIndex--;
+        setTimeout(typewriter, 30);
+      } else if (!isDeleting && charIndex === currentText.length) {
+        setTimeout(() => {
+          isDeleting = true;
+          typewriter();
+        }, 2500);
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+        setTimeout(typewriter, 500);
+      }
+    }
+  </script>
+</body>
+</html>
