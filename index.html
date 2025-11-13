@@ -374,6 +374,24 @@
       .splash-content h1 {
         font-size: 2.5rem;
       }
+
+      /* Reduced text glow on mobile for better visibility */
+      .name {
+        animation: nameGlowMobile 1.5s ease-in-out infinite alternate;
+      }
+
+      @keyframes nameGlowMobile {
+        from {
+          text-shadow: 0 0 3px #00a2ff, 0 0 6px #00a2ff;
+        }
+        to {
+          text-shadow: 0 0 5px #00a2ff, 0 0 10px #00a2ff;
+        }
+      }
+
+      .profile-pic {
+        box-shadow: 0 0 20px rgba(0, 162, 255, 0.2);
+      }
     }
   </style>
 </head>
@@ -467,6 +485,7 @@
     const mouseParticles = [];
     let particlesActive = false;
     let isMuted = false;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -492,8 +511,10 @@
 
       draw() {
         ctx.fillStyle = 'rgba(0, 162, 255, 0.8)';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#00a2ff';
+        if (!isMobile) {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = '#00a2ff';
+        }
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -527,7 +548,8 @@
     }
 
     function createSnowParticles() {
-      for (let i = 0; i < 100; i++) {
+      const particleCount = isMobile ? 50 : 100;
+      for (let i = 0; i < particleCount; i++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
         snowParticles.push(new SnowParticle(x, y));
@@ -539,7 +561,8 @@
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      for (let i = 0; i < 5; i++) {
+      const particleCount = isMobile ? 2 : 5;
+      for (let i = 0; i < particleCount; i++) {
         mouseParticles.push(new MouseParticle(x, y));
       }
     }
@@ -566,13 +589,13 @@
 
     window.addEventListener('mousemove', createMouseParticles);
     window.addEventListener('touchmove', (e) => {
-      e.preventDefault();
+      if (!particlesActive) return;
       const touch = e.touches[0];
       createMouseParticles({
         clientX: touch.clientX,
         clientY: touch.clientY
       });
-    }, { passive: false });
+    }, { passive: true });
 
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
